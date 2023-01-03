@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://bg.gd" type="Script" id=1]
 [ext_resource path="res://Character.tscn" type="PackedScene" id=2]
@@ -6,7 +6,6 @@
 [ext_resource path="res://crt_material.tres" type="Material" id=4]
 [ext_resource path="res://bgs/bg-1.png" type="Texture" id=5]
 [ext_resource path="res://bgs/bl.png" type="Texture" id=6]
-[ext_resource path="res://bgs/bg-end.png" type="Texture" id=7]
 [ext_resource path="res://sprites/hate1.png" type="Texture" id=8]
 [ext_resource path="res://sprites/hate2.png" type="Texture" id=9]
 [ext_resource path="res://sprites/love.png" type="Texture" id=10]
@@ -231,10 +230,6 @@ texture = ExtResource( 5 )
 position = Vector2( 2880, 536 )
 texture = ExtResource( 5 )
 flip_h = true
-
-[node name="Sprite" type="Sprite" parent="bg"]
-position = Vector2( 0, 540 )
-texture = ExtResource( 7 )
 
 [node name="plakati" type="Node2D" parent="."]
 modulate = Color( 0.662745, 0, 0, 1 )
