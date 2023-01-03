@@ -1,0 +1,413 @@
+[gd_scene load_steps=25 format=2]
+
+[ext_resource path="res://bg.gd" type="Script" id=1]
+[ext_resource path="res://Character.tscn" type="PackedScene" id=2]
+[ext_resource path="res://fonts/3117-font(1).ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://crt_material.tres" type="Material" id=4]
+[ext_resource path="res://bgs/bg-1.png" type="Texture" id=5]
+[ext_resource path="res://bgs/bl.png" type="Texture" id=6]
+[ext_resource path="res://bgs/bg-end.png" type="Texture" id=7]
+[ext_resource path="res://sprites/hate1.png" type="Texture" id=8]
+[ext_resource path="res://sprites/hate2.png" type="Texture" id=9]
+[ext_resource path="res://sprites/love.png" type="Texture" id=10]
+[ext_resource path="res://sprites/shelf.png" type="Texture" id=11]
+[ext_resource path="res://audio/voice/shelf.wav" type="AudioStream" id=12]
+[ext_resource path="res://audio/voice/ser.wav" type="AudioStream" id=13]
+[ext_resource path="res://sprites/youre-nothing.png" type="Texture" id=14]
+[ext_resource path="res://sprites/plakat.png" type="Texture" id=15]
+[ext_resource path="res://CanvasLayer.gd" type="Script" id=16]
+[ext_resource path="res://roto_screens/pyra.png" type="Texture" id=17]
+
+[sub_resource type="GDScript" id=3]
+script/source = "extends Node2D
+
+
+
+# warning-ignore:unused_argument
+func _on_shelf_body_entered(body):
+	$KinematicBody2D/Label.text = \"Тут пирамида\"
+	$shelf/shelf_voice.play()
+
+
+# warning-ignore:unused_argument
+func _on_shelf_body_exited(body):
+	$KinematicBody2D/Label.text = \"\"
+"
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 206.5, 144 )
+
+[sub_resource type="SpriteFrames" id=7]
+animations = [ {
+"frames": [ ExtResource( 17 ) ],
+"loop": true,
+"name": "pyra",
+"speed": 5.0
+} ]
+
+[sub_resource type="Shader" id=5]
+code = "shader_type canvas_item;
+
+// change these values to 0.0 to turn off individual effects
+uniform float vertJerkOpt = 0.0;
+uniform float vertMovementOpt = 0.0;
+uniform float bottomStaticOpt = 1.0;
+uniform float scalinesOpt = 1.0;
+uniform float rgbOffsetOpt = 1.0;
+uniform float horzFuzzOpt = 1.0;
+
+// Noise generation functions borrowed from: 
+// https://github.com/ashima/webgl-noise/blob/master/src/noise2D.glsl
+
+vec3 mod289(vec3 x) {
+  return x - floor(x * (1.0 / 289.0)) * 289.0;
+}
+
+vec2 mod2891(vec2 x) {
+  return x - floor(x * (1.0 / 289.0)) * 289.0;
+}
+
+vec3 permute(vec3 x) {
+  return mod289(((x*34.0)+1.0)*x);
+}
+
+float snoise(vec2 v)
+  {
+  const vec4 C = vec4(0.211324865405187,  // (3.0-sqrt(3.0))/6.0
+                      0.366025403784439,  // 0.5*(sqrt(3.0)-1.0)
+                     -0.577350269189626,  // -1.0 + 2.0 * C.x
+                      0.024390243902439); // 1.0 / 41.0
+// First corner
+  vec2 i  = floor(v + dot(v, C.yy) );
+  vec2 x0 = v -   i + dot(i, C.xx);
+
+// Other corners
+  vec2 i1;
+  //i1.x = step( x0.y, x0.x ); // x0.x > x0.y ? 1.0 : 0.0
+  //i1.y = 1.0 - i1.x;
+  i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
+  // x0 = x0 - 0.0 + 0.0 * C.xx ;
+  // x1 = x0 - i1 + 1.0 * C.xx ;
+  // x2 = x0 - 1.0 + 2.0 * C.xx ;
+  vec4 x12 = x0.xyxy + C.xxzz;
+  x12.xy -= i1;
+
+// Permutations
+  i = mod2891(i); // Avoid truncation effects in permutation
+  vec3 p = permute( permute( i.y + vec3(0.0, i1.y, 1.0 ))
+		+ i.x + vec3(0.0, i1.x, 1.0 ));
+
+  vec3 m = max(0.5 - vec3(dot(x0,x0), dot(x12.xy,x12.xy), dot(x12.zw,x12.zw)), 0.0);
+  m = m*m ;
+  m = m*m ;
+
+// Gradients: 41 points uniformly over a line, mapped onto a diamond.
+// The ring size 17*17 = 289 is close to a multiple of 41 (41*7 = 287)
+
+  vec3 x = 2.0 * fract(p * C.www) - 1.0;
+  vec3 h = abs(x) - 0.5;
+  vec3 ox = floor(x + 0.5);
+  vec3 a0 = x - ox;
+
+// Normalise gradients implicitly by scaling m
+// Approximation of: m *= inversesqrt( a0*a0 + h*h );
+  m *= 1.79284291400159 - 0.85373472095314 * ( a0*a0 + h*h );
+
+// Compute final noise value at P
+  vec3 g;
+  g.x  = a0.x  * x0.x  + h.x  * x0.y;
+  g.yz = a0.yz * x12.xz + h.yz * x12.yw;
+  return 130.0 * dot(m, g);
+}
+
+float staticV(vec2 uv, float iTime) {
+    float staticHeight = snoise(vec2(9.0,iTime*0.5+3.0))*0.0+2.0;
+    float staticAmount = snoise(vec2(1.0,iTime*0.00001-6.0))*0.1+0.3;
+    float staticStrength = snoise(vec2(-9.75,iTime*1.0-0.5))*1.0+1.0;
+	return (1.0-step(snoise(vec2(5.0*pow(iTime,2.0)+pow(uv.x*7.0,1.2),pow((mod(iTime,100.0)+100.0)*uv.y*0.3+3.0,staticHeight))),staticAmount))*staticStrength;
+}
+
+void fragment()
+{
+
+	vec2 uv =  FRAGCOORD.xy/(1. / SCREEN_PIXEL_SIZE);
+	
+	float jerkOffset = (1.0-step(snoise(vec2(TIME*1.3,5.0)),0.8))*0.05;
+	
+	float fuzzOffset = snoise(vec2(TIME*15.0,uv.y*80.0))*0.003;
+	float largeFuzzOffset = snoise(vec2(TIME*1.0,uv.y*25.0))*0.004;
+    
+    float vertMovementOn = (1.0-step(snoise(vec2(TIME*0.2,1.0)),0.4))*vertMovementOpt;
+    float vertJerk = (1.0-step(snoise(vec2(TIME*1.5,5.0)),0.6))*vertJerkOpt;
+    float vertJerk2 = (1.0-step(snoise(vec2(TIME*5.5,5.0)),0.2))*vertJerkOpt;
+    float yOffset = abs(sin(TIME)*4.0)*vertMovementOn+vertJerk*vertJerk2*0.3;
+    float y1 = mod(uv.y+yOffset,1.0);
+    
+	
+	float xOffset = (fuzzOffset + largeFuzzOffset) * horzFuzzOpt;
+    
+    float staticVal = 0.0;
+   
+    for (float y = -1.0; y <= 1.0; y += 1.0) {
+        float maxDist = 5.0/200.0;
+        float dist = y/200.0;
+    	staticVal += staticV(vec2(uv.x,uv.y+dist), TIME)*(maxDist-abs(dist))*1.5;
+    }
+        
+    staticVal *= bottomStaticOpt;
+	
+	float red 	=   texture(	SCREEN_TEXTURE, 	vec2(uv.x + xOffset -0.01*rgbOffsetOpt,y1)).r+staticVal;
+	float green = 	texture(	SCREEN_TEXTURE, 	vec2(uv.x + xOffset,	  y1)).g+staticVal;
+	float blue 	=	texture(	SCREEN_TEXTURE, 	vec2(uv.x + xOffset +0.01*rgbOffsetOpt,y1)).b+staticVal;
+	
+	vec3 color = vec3(red,green,blue);
+	float scanline = sin(uv.y*800.0)*0.04*scalinesOpt;
+	color -= scanline;
+	
+	COLOR = vec4(color,1.0);
+}"
+
+[sub_resource type="ShaderMaterial" id=6]
+shader = SubResource( 5 )
+shader_param/vertJerkOpt = 0.159
+shader_param/vertMovementOpt = 0.0
+shader_param/bottomStaticOpt = 1.0
+shader_param/scalinesOpt = 0.0
+shader_param/rgbOffsetOpt = 0.128
+shader_param/horzFuzzOpt = 0.124
+
+[sub_resource type="DynamicFont" id=4]
+size = 63
+outline_size = 6
+font_data = ExtResource( 3 )
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 67.5, 535.5 )
+
+[node name="Node2D" type="Node2D"]
+script = SubResource( 3 )
+
+[node name="bg" type="Node2D" parent="."]
+position = Vector2( 960, 0 )
+script = ExtResource( 1 )
+
+[node name="Bl" type="Sprite" parent="bg"]
+position = Vector2( -2156.74, 971 )
+scale = Vector2( 3.43398, 5.19271 )
+texture = ExtResource( 6 )
+
+[node name="trigger" type="Node2D" parent="bg"]
+position = Vector2( -960, 4 )
+
+[node name="bg_side22" type="Sprite" parent="bg/trigger"]
+position = Vector2( 4800, 536 )
+texture = ExtResource( 5 )
+
+[node name="bg_side2" type="Sprite" parent="bg/trigger"]
+position = Vector2( 2880, 536 )
+texture = ExtResource( 5 )
+flip_h = true
+
+[node name="trigger3" type="Node2D" parent="bg"]
+position = Vector2( 2880, 4 )
+
+[node name="bg_side22" type="Sprite" parent="bg/trigger3"]
+position = Vector2( 4800, 536 )
+texture = ExtResource( 5 )
+
+[node name="bg_side2" type="Sprite" parent="bg/trigger3"]
+position = Vector2( 2880, 536 )
+texture = ExtResource( 5 )
+flip_h = true
+
+[node name="trigger4" type="Node2D" parent="bg"]
+position = Vector2( 6720, 4 )
+
+[node name="bg_side22" type="Sprite" parent="bg/trigger4"]
+position = Vector2( 4800, 536 )
+texture = ExtResource( 5 )
+
+[node name="bg_side2" type="Sprite" parent="bg/trigger4"]
+position = Vector2( 2880, 536 )
+texture = ExtResource( 5 )
+flip_h = true
+
+[node name="Sprite" type="Sprite" parent="bg"]
+position = Vector2( 0, 540 )
+texture = ExtResource( 7 )
+
+[node name="plakati" type="Node2D" parent="."]
+modulate = Color( 0.662745, 0, 0, 1 )
+position = Vector2( 447, -658 )
+
+[node name="Plakat" type="Sprite" parent="plakati"]
+position = Vector2( 9174, 1043 )
+scale = Vector2( 1.52484, 1.26543 )
+texture = ExtResource( 15 )
+
+[node name="Plakat2" type="Sprite" parent="plakati"]
+modulate = Color( 0.666667, 0, 0, 1 )
+position = Vector2( 9314, 1211 )
+scale = Vector2( 1.52484, 1.26543 )
+texture = ExtResource( 15 )
+
+[node name="Plakat3" type="Sprite" parent="plakati"]
+position = Vector2( 9490, 1073 )
+scale = Vector2( 1.52484, 1.26543 )
+texture = ExtResource( 15 )
+
+[node name="Plakat4" type="Sprite" parent="plakati"]
+modulate = Color( 0.831373, 0, 0, 1 )
+position = Vector2( 9618, 1357 )
+scale = Vector2( 1.52484, 1.26543 )
+texture = ExtResource( 15 )
+
+[node name="Plakat5" type="Sprite" parent="plakati"]
+position = Vector2( 9852, 1163 )
+scale = Vector2( 1.52484, 1.26543 )
+texture = ExtResource( 15 )
+
+[node name="Plakat6" type="Sprite" parent="plakati"]
+modulate = Color( 0.666667, 0, 0, 1 )
+position = Vector2( 9684, 1021 )
+scale = Vector2( 1.52484, 1.26543 )
+texture = ExtResource( 15 )
+
+[node name="Plakat7" type="Sprite" parent="plakati"]
+position = Vector2( 9116, 1323 )
+scale = Vector2( 1.52484, 1.26543 )
+texture = ExtResource( 15 )
+
+[node name="Plakat8" type="Sprite" parent="plakati"]
+modulate = Color( 0.831373, 0, 0, 1 )
+position = Vector2( 9870, 1363 )
+scale = Vector2( 1.52484, 1.26543 )
+texture = ExtResource( 15 )
+
+[node name="Plakat9" type="Sprite" parent="plakati"]
+modulate = Color( 0.666667, 0, 0, 1 )
+position = Vector2( 9702, 1187 )
+scale = Vector2( 1.52484, 1.26543 )
+texture = ExtResource( 15 )
+
+[node name="Plakat10" type="Sprite" parent="plakati"]
+position = Vector2( 9442, 1287 )
+scale = Vector2( 1.52484, 1.26543 )
+texture = ExtResource( 15 )
+
+[node name="Plakat11" type="Sprite" parent="plakati"]
+modulate = Color( 0.831373, 0, 0, 1 )
+position = Vector2( 9056, 1133 )
+scale = Vector2( 1.52484, 1.26543 )
+texture = ExtResource( 15 )
+
+[node name="nothing" type="Sprite" parent="plakati"]
+position = Vector2( 8324, 1211 )
+scale = Vector2( 1.52484, 1.26543 )
+texture = ExtResource( 14 )
+
+[node name="words" type="Node2D" parent="."]
+position = Vector2( 2556, -16 )
+
+[node name="Sprite" type="Sprite" parent="words"]
+modulate = Color( 1, 0, 0, 1 )
+position = Vector2( 1062.21, 394.955 )
+rotation = -0.136744
+scale = Vector2( 1.35495, 1.12445 )
+texture = ExtResource( 8 )
+
+[node name="Sprite2" type="Sprite" parent="words"]
+modulate = Color( 1, 0, 0, 1 )
+position = Vector2( 1552, 710 )
+rotation = 0.184025
+scale = Vector2( 0.904546, 0.992013 )
+texture = ExtResource( 9 )
+
+[node name="Sprite3" type="Sprite" parent="words"]
+modulate = Color( 1, 0, 0, 1 )
+position = Vector2( 434, 739 )
+rotation = -0.0145723
+scale = Vector2( 0.904546, 0.992013 )
+texture = ExtResource( 10 )
+
+[node name="shelf" type="Node2D" parent="."]
+
+[node name="area" type="Area2D" parent="shelf"]
+position = Vector2( 3147, 236 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="shelf/area"]
+position = Vector2( 474.5, 586 )
+shape = SubResource( 2 )
+
+[node name="Sprite" type="Sprite" parent="shelf"]
+modulate = Color( 0.576471, 0.270588, 0, 1 )
+position = Vector2( 3618, 812 )
+scale = Vector2( 1.732, 1.50495 )
+texture = ExtResource( 11 )
+
+[node name="shelf_voice" type="AudioStreamPlayer" parent="shelf"]
+stream = ExtResource( 12 )
+
+[node name="KinematicBody2D" parent="." instance=ExtResource( 2 )]
+position = Vector2( 960, 370 )
+
+[node name="screens" type="AnimatedSprite" parent="KinematicBody2D"]
+visible = false
+position = Vector2( -0.718567, 130.303 )
+scale = Vector2( 1.61392, 1.69823 )
+frames = SubResource( 7 )
+animation = "pyra"
+script = ExtResource( 16 )
+
+[node name="Camera2D" type="Camera2D" parent="KinematicBody2D"]
+position = Vector2( 0, 128.788 )
+scale = Vector2( 0.337553, 0.407834 )
+current = true
+
+[node name="shader" type="Node2D" parent="KinematicBody2D"]
+position = Vector2( -366.49, -93.9394 )
+scale = Vector2( 0.718608, 0.757576 )
+
+[node name="ColorRect" type="ColorRect" parent="KinematicBody2D/shader"]
+material = SubResource( 6 )
+margin_left = -451.0
+margin_top = -246.0
+margin_right = 1469.0
+margin_bottom = 834.0
+
+[node name="BackBufferCopy" type="BackBufferCopy" parent="KinematicBody2D/shader"]
+copy_mode = 2
+
+[node name="ColorRect2" type="ColorRect" parent="KinematicBody2D/shader"]
+material = ExtResource( 4 )
+margin_left = -451.0
+margin_top = -246.0
+margin_right = 1469.0
+margin_bottom = 834.0
+
+[node name="Label" type="Label" parent="KinematicBody2D"]
+margin_left = -690.582
+margin_top = -101.515
+margin_right = 688.418
+margin_bottom = -13.5151
+custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 4 )
+align = 1
+valign = 1
+uppercase = true
+
+[node name="walls" type="StaticBody2D" parent="."]
+position = Vector2( 451, 244 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="walls"]
+position = Vector2( -380.5, 291.5 )
+shape = SubResource( 1 )
+
+[node name="ost" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 13 )
+autoplay = true
+bus = "music"
+
+[connection signal="body_entered" from="shelf/area" to="." method="_on_shelf_body_entered"]
+[connection signal="body_entered" from="shelf/area" to="KinematicBody2D/screens" method="_on_area_body_entered"]
+[connection signal="body_exited" from="shelf/area" to="." method="_on_shelf_body_exited"]
