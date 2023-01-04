@@ -17,7 +17,7 @@
 [sub_resource type="GDScript" id=2]
 script/source = "extends KinematicBody2D
 
-export (int) var speed = 700
+export (int) var speed = 200
 
 var velocity = Vector2()
 
@@ -76,4 +76,5 @@ shape = SubResource( 1 )
 position = Vector2( 20, 256 )
 scale = Vector2( 0.8, 0.8 )
 frames = SubResource( 3 )
+frame = 1
 playing = true
