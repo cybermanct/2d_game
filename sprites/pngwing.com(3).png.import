@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/bg-1.png-92c2c997504bcd1dd2e4f53e1fb49d5f.stex"
+path="res://.import/pngwing.com(3).png-44dac58a6baa8749807186eb88bbdbc3.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://bgs/bg-1.png"
-dest_files=[ "res://.import/bg-1.png-92c2c997504bcd1dd2e4f53e1fb49d5f.stex" ]
+source_file="res://sprites/pngwing.com(3).png"
+dest_files=[ "res://.import/pngwing.com(3).png-44dac58a6baa8749807186eb88bbdbc3.stex" ]
 
 [params]
 
@@ -21,13 +21,13 @@ compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
 flags/filter=false
-flags/mipmaps=false
+flags/mipmaps=true
 flags/anisotropic=false
 flags/srgb=2
 process/fix_alpha_border=true
-process/premult_alpha=false
+process/premult_alpha=true
 process/HDR_as_SRGB=false
-process/invert_color=false
+process/invert_color=true
 process/normal_map_invert_y=false
 stream=false
 size_limit=0

@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://Menu.gd" type="Script" id=1]
+
+[sub_resource type="Theme" id=1]
 
 [node name="Menu" type="Control"]
 anchor_left = 0.5
@@ -21,6 +23,7 @@ anchor_bottom = 1.0
 margin_left = -189.0
 margin_top = -274.0
 margin_right = 154.0
+theme = SubResource( 1 )
 alignment = 1
 
 [node name="Start" type="Button" parent="VBoxContainer"]
