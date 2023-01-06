@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=2]
+[gd_scene load_steps=39 format=2]
 
 [ext_resource path="res://bg.gd" type="Script" id=1]
 [ext_resource path="res://Character.tscn" type="PackedScene" id=2]
@@ -29,6 +29,8 @@
 [ext_resource path="res://sprites/pngwing.com(4).png" type="Texture" id=27]
 [ext_resource path="res://shader2.tres" type="Material" id=28]
 [ext_resource path="res://sprites/clock.png" type="Texture" id=29]
+[ext_resource path="res://sprites/blood-flows-down-screen-screensaver-background-mass-texture-similar-to-blood-red-blood-flows-down-screen-188135885.jpg" type="Texture" id=30]
+[ext_resource path="res://Blood.gd" type="Script" id=31]
 
 [sub_resource type="GDScript" id=3]
 script/source = "extends Node2D
@@ -50,7 +52,7 @@ func _on_shelf_body_exited(body):
 blend_mode = 2
 
 [sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 206.5, 144 )
+extents = Vector2( 54, 559 )
 
 [sub_resource type="SpriteFrames" id=7]
 animations = [ {
@@ -67,6 +69,9 @@ font_data = ExtResource( 3 )
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 67.5, 535.5 )
+
+[sub_resource type="CanvasItemMaterial" id=10]
+blend_mode = 3
 
 [node name="Node2D" type="Node2D"]
 script = SubResource( 3 )
@@ -587,11 +592,32 @@ shape = SubResource( 1 )
 position = Vector2( 68589, 314 )
 shape = SubResource( 1 )
 
+[node name="wall_middle" type="CollisionShape2D" parent="walls"]
+position = Vector2( 58620, 285 )
+shape = SubResource( 1 )
+disabled = true
+
 [node name="ost" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 13 )
 autoplay = true
 bus = "music"
 
+[node name="Blood" type="Sprite" parent="."]
+visible = false
+material = SubResource( 10 )
+position = Vector2( 62224, 549 )
+scale = Vector2( 48.7042, 6.975 )
+texture = ExtResource( 30 )
+script = ExtResource( 31 )
+
+[node name="blood_trigger" type="Area2D" parent="."]
+position = Vector2( 59522, -48 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="blood_trigger"]
+position = Vector2( 322, 600 )
+shape = SubResource( 2 )
+
 [connection signal="body_entered" from="shelf/area" to="." method="_on_shelf_body_entered"]
 [connection signal="body_entered" from="shelf/area" to="KinematicBody2D/screens" method="_on_area_body_entered"]
 [connection signal="body_exited" from="shelf/area" to="." method="_on_shelf_body_exited"]
+[connection signal="body_entered" from="blood_trigger" to="Blood" method="_on_blood_trigger_body_entered"]
