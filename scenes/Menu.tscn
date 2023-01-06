@@ -1,0 +1,70 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://materials and shaders/shader2.tres" type="Material" id=1]
+[ext_resource path="res://materials and shaders/shader1.tres" type="Material" id=2]
+[ext_resource path="res://fonts/3117-font(1).ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://scripts/Menu.gd" type="Script" id=4]
+
+[sub_resource type="DynamicFont" id=1]
+size = 80
+outline_color = Color( 0, 0, 0, 1 )
+extra_spacing_char = 29
+extra_spacing_space = -31
+font_data = ExtResource( 3 )
+
+[node name="MainMenu" type="Node2D"]
+script = ExtResource( 4 )
+
+[node name="Background" type="ColorRect" parent="."]
+margin_right = 1920.0
+margin_bottom = 1080.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="NewGame" type="ColorRect" parent="."]
+margin_left = 320.0
+margin_top = 704.0
+margin_right = 1600.0
+margin_bottom = 824.0
+color = Color( 0.101961, 0.101961, 0.101961, 1 )
+
+[node name="Label" type="Label" parent="NewGame"]
+margin_left = 128.0
+margin_right = 1152.0
+margin_bottom = 128.0
+custom_fonts/font = SubResource( 1 )
+text = "new game"
+align = 1
+valign = 1
+uppercase = true
+
+[node name="QuitGame" type="ColorRect" parent="."]
+margin_left = 320.0
+margin_top = 904.0
+margin_right = 1600.0
+margin_bottom = 1024.0
+color = Color( 0.101961, 0.101961, 0.101961, 1 )
+
+[node name="Label" type="Label" parent="QuitGame"]
+margin_left = 128.0
+margin_right = 1152.0
+margin_bottom = 128.0
+custom_fonts/font = SubResource( 1 )
+text = "quit game"
+align = 1
+valign = 1
+uppercase = true
+
+[node name="shader" type="Node2D" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="shader"]
+material = ExtResource( 2 )
+margin_right = 1920.0
+margin_bottom = 1080.0
+
+[node name="BackBufferCopy" type="BackBufferCopy" parent="shader"]
+copy_mode = 2
+
+[node name="ColorRect2" type="ColorRect" parent="shader"]
+material = ExtResource( 1 )
+margin_right = 1920.0
+margin_bottom = 1080.0

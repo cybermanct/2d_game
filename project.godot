@@ -21,8 +21,12 @@ _global_script_class_icons={
 [application]
 
 config/name="2 Dgame Test"
-run/main_scene="res://Menu.tscn"
+run/main_scene="res://scenes/Menu.tscn"
 config/icon="res://icon.png"
+
+[audio]
+
+default_bus_layout="res://audio/default_bus_layout.tres"
 
 [display]
 
@@ -64,4 +68,4 @@ common/enable_pause_aware_picking=true
 
 [rendering]
 
-environment/default_environment="res://default_env.tres"
+environment/default_environment="res://materials and shaders/default_env.tres"

@@ -1,0 +1,47 @@
+[gd_scene load_steps=16 format=2]
+
+[ext_resource path="res://scripts/Character.gd" type="Script" id=1]
+[ext_resource path="res://sprites/player/2.png" type="Texture" id=2]
+[ext_resource path="res://sprites/player/0.png" type="Texture" id=3]
+[ext_resource path="res://sprites/player/02.png" type="Texture" id=4]
+[ext_resource path="res://sprites/player/1.png" type="Texture" id=5]
+[ext_resource path="res://sprites/player/4.png" type="Texture" id=6]
+[ext_resource path="res://sprites/player/5.png" type="Texture" id=7]
+[ext_resource path="res://sprites/player/3.png" type="Texture" id=8]
+[ext_resource path="res://sprites/player/6.png" type="Texture" id=9]
+[ext_resource path="res://sprites/player/7.png" type="Texture" id=10]
+[ext_resource path="res://sprites/player/8.png" type="Texture" id=11]
+[ext_resource path="res://sprites/player/9.png" type="Texture" id=12]
+[ext_resource path="res://sprites/player/10.png" type="Texture" id=13]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 77.9689, 233.712 )
+
+[sub_resource type="SpriteFrames" id=3]
+animations = [ {
+"frames": [ ExtResource( 3 ), ExtResource( 4 ) ],
+"loop": true,
+"name": "default",
+"speed": 1.5
+}, {
+"frames": [ ExtResource( 5 ), ExtResource( 2 ), ExtResource( 8 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 13 ) ],
+"loop": true,
+"name": "walk",
+"speed": 4.0
+} ]
+
+[node name="KinematicBody2D" type="KinematicBody2D"]
+position = Vector2( 960, 224 )
+scale = Vector2( 1.39158, 1.32 )
+script = ExtResource( 1 )
+speed = 3000
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 17.9653, 274.621 )
+shape = SubResource( 1 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+position = Vector2( 20, 256 )
+scale = Vector2( 0.8, 0.8 )
+frames = SubResource( 3 )
+playing = true
