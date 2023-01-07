@@ -19,5 +19,5 @@ func _ready():
 func _on_blood_trigger_body_entered(_body):
 	show()
 	$"../ost".pitch_scale = 0.4
-	$"../walls/wall_middle".disabled = false
 	$"../KinematicBody2D".speed = 100
+	$blood_wall/CollisionShape2D.disabled = false

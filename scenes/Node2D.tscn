@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=2]
+[gd_scene load_steps=40 format=2]
 
 [ext_resource path="res://scripts/bg.gd" type="Script" id=1]
 [ext_resource path="res://scenes/Character.tscn" type="PackedScene" id=2]
@@ -52,7 +52,7 @@ func _on_shelf_body_exited(body):
 blend_mode = 2
 
 [sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 54, 559 )
+extents = Vector2( 188.5, 135 )
 
 [sub_resource type="SpriteFrames" id=7]
 animations = [ {
@@ -72,6 +72,9 @@ extents = Vector2( 67.5, 535.5 )
 
 [sub_resource type="CanvasItemMaterial" id=10]
 blend_mode = 3
+
+[sub_resource type="RectangleShape2D" id=11]
+extents = Vector2( 32, 541.5 )
 
 [node name="Node2D" type="Node2D"]
 script = SubResource( 3 )
@@ -521,10 +524,11 @@ position = Vector2( 5195, 9 )
 position = Vector2( 3147, 236 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="shelf/area"]
-position = Vector2( 474.5, 586 )
+position = Vector2( 475.5, 554 )
 shape = SubResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="shelf"]
+visible = false
 modulate = Color( 0.576471, 0.270588, 0, 1 )
 position = Vector2( 3618, 812 )
 scale = Vector2( 1.732, 1.50495 )
@@ -532,6 +536,7 @@ texture = ExtResource( 11 )
 
 [node name="shelf_voice" type="AudioStreamPlayer" parent="shelf"]
 stream = ExtResource( 12 )
+volume_db = -80.0
 
 [node name="KinematicBody2D" parent="." instance=ExtResource( 2 )]
 position = Vector2( 960, 370 )
@@ -592,11 +597,6 @@ shape = SubResource( 1 )
 position = Vector2( 68589, 314 )
 shape = SubResource( 1 )
 
-[node name="wall_middle" type="CollisionShape2D" parent="walls"]
-position = Vector2( 58620, 285 )
-shape = SubResource( 1 )
-disabled = true
-
 [node name="ost" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 13 )
 autoplay = true
@@ -605,19 +605,29 @@ bus = "music"
 [node name="Blood" type="Sprite" parent="."]
 visible = false
 material = SubResource( 10 )
-position = Vector2( 62224, 549 )
-scale = Vector2( 48.7042, 6.975 )
+position = Vector2( 34512.5, 549 )
+scale = Vector2( 243.856, 6.975 )
 texture = ExtResource( 30 )
 script = ExtResource( 31 )
 
-[node name="blood_trigger" type="Area2D" parent="."]
-position = Vector2( 59522, -48 )
+[node name="blood_wall" type="StaticBody2D" parent="Blood"]
+position = Vector2( 100.967, -9.7491 )
+scale = Vector2( 0.00410079, 0.143369 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="blood_trigger"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Blood/blood_wall"]
+position = Vector2( 22, 50.5 )
+shape = SubResource( 11 )
+disabled = true
+
+[node name="blood_trigger" type="Area2D" parent="Blood"]
+position = Vector2( 102.559, -85.5914 )
+scale = Vector2( 0.00410079, 0.143369 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Blood/blood_trigger"]
 position = Vector2( 322, 600 )
 shape = SubResource( 2 )
 
 [connection signal="body_entered" from="shelf/area" to="." method="_on_shelf_body_entered"]
 [connection signal="body_entered" from="shelf/area" to="KinematicBody2D/screens" method="_on_area_body_entered"]
 [connection signal="body_exited" from="shelf/area" to="." method="_on_shelf_body_exited"]
-[connection signal="body_entered" from="blood_trigger" to="Blood" method="_on_blood_trigger_body_entered"]
+[connection signal="body_entered" from="Blood/blood_trigger" to="Blood" method="_on_blood_trigger_body_entered"]
