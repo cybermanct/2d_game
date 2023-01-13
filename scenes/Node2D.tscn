@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=2]
+[gd_scene load_steps=45 format=2]
 
 [ext_resource path="res://scripts/bg.gd" type="Script" id=1]
 [ext_resource path="res://scenes/Character.tscn" type="PackedScene" id=2]
@@ -31,21 +31,29 @@
 [ext_resource path="res://sprites/clock.png" type="Texture" id=29]
 [ext_resource path="res://sprites/blood-flows-down-screen-screensaver-background-mass-texture-similar-to-blood-red-blood-flows-down-screen-188135885.jpg" type="Texture" id=30]
 [ext_resource path="res://scripts/Blood.gd" type="Script" id=31]
+[ext_resource path="res://roto_screens/pistol_shoot/4.png" type="Texture" id=32]
+[ext_resource path="res://roto_screens/pistol_shoot/11.png" type="Texture" id=33]
+[ext_resource path="res://roto_screens/pistol_shoot/3.png" type="Texture" id=34]
+[ext_resource path="res://roto_screens/pistol_shoot/12.png" type="Texture" id=35]
+[ext_resource path="res://roto_screens/pistol_shoot/2.png" type="Texture" id=36]
+[ext_resource path="res://roto_screens/pistol_shoot/5.png" type="Texture" id=37]
 
 [sub_resource type="GDScript" id=3]
 script/source = "extends Node2D
 
-
+onready var screens = $KinematicBody2D/screens
 
 # warning-ignore:unused_argument
 func _on_shelf_body_entered(body):
-	$KinematicBody2D/Label.text = \"Тут пирамида\"
-	$shelf/shelf_voice.play()
-
+	pass
 
 # warning-ignore:unused_argument
 func _on_shelf_body_exited(body):
 	$KinematicBody2D/Label.text = \"\"
+
+func _process(delta):
+	pass
+	
 "
 
 [sub_resource type="CanvasItemMaterial" id=9]
@@ -56,6 +64,16 @@ extents = Vector2( 188.5, 135 )
 
 [sub_resource type="SpriteFrames" id=7]
 animations = [ {
+"frames": [ ExtResource( 33 ), ExtResource( 35 ) ],
+"loop": true,
+"name": "pistol_idle",
+"speed": 1.0
+}, {
+"frames": [ ExtResource( 36 ), ExtResource( 34 ), ExtResource( 32 ), ExtResource( 37 ) ],
+"loop": true,
+"name": "pistol_prepare",
+"speed": 6.0
+}, {
 "frames": [ ExtResource( 17 ) ],
 "loop": true,
 "name": "pyra",
@@ -72,9 +90,6 @@ extents = Vector2( 67.5, 535.5 )
 
 [sub_resource type="CanvasItemMaterial" id=10]
 blend_mode = 3
-
-[sub_resource type="RectangleShape2D" id=11]
-extents = Vector2( 32, 541.5 )
 
 [node name="Node2D" type="Node2D"]
 script = SubResource( 3 )
@@ -543,10 +558,12 @@ position = Vector2( 960, 370 )
 
 [node name="screens" type="AnimatedSprite" parent="KinematicBody2D"]
 visible = false
-position = Vector2( -0.718567, 130.303 )
-scale = Vector2( 1.61392, 1.69823 )
+position = Vector2( 4.94588e-05, 128.788 )
+scale = Vector2( 2.15582, 2.27273 )
 frames = SubResource( 7 )
-animation = "pyra"
+animation = "pistol_prepare"
+frame = 3
+playing = true
 script = ExtResource( 16 )
 
 [node name="Camera2D" type="Camera2D" parent="KinematicBody2D"]
@@ -609,15 +626,6 @@ position = Vector2( 34512.5, 549 )
 scale = Vector2( 243.856, 6.975 )
 texture = ExtResource( 30 )
 script = ExtResource( 31 )
-
-[node name="blood_wall" type="StaticBody2D" parent="Blood"]
-position = Vector2( 100.967, -9.7491 )
-scale = Vector2( 0.00410079, 0.143369 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Blood/blood_wall"]
-position = Vector2( 22, 50.5 )
-shape = SubResource( 11 )
-disabled = true
 
 [node name="blood_trigger" type="Area2D" parent="Blood"]
 position = Vector2( 102.559, -85.5914 )
