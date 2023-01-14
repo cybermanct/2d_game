@@ -1,6 +1,6 @@
 extends Node2D
 
-var loaded_object = load_json_file("res://scripts/dialogs.json")
+var path = "res://scripts/dialogs.json"
 var dict = {}
 var selected_dialog = 0
 
@@ -18,8 +18,8 @@ func load_json_file(path):
 	var obj = dict.result
 	return obj
 
-func print_dialog(path, key):
-	load_json_file(path)
+func print_dialog(loaded_object, key):
+	load_json_file(loaded_object)
 	print(loaded_object)
 	$Background/Dialog_back/Dialog.text = dict.result[key]
 
@@ -49,6 +49,6 @@ func _input(_event):
 	elif Input.is_action_just_pressed("ui_enter"):
 		match selected_dialog:
 			0:
-				print_dialog("res://scripts/dialogs.json", "test")	
+				print_dialog(path, "test")	
 			1:
-				print_dialog("res://scripts/dialogs.json", "test2")
+				print_dialog(path, "test2")

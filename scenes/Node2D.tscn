@@ -536,7 +536,7 @@ position = Vector2( 4.94588e-05, 128.788 )
 scale = Vector2( 2.15582, 2.27273 )
 frames = SubResource( 7 )
 animation = "pistol_prepare"
-frame = 1
+frame = 2
 playing = true
 script = ExtResource( 16 )
 
