@@ -1,5 +1,6 @@
 extends Node2D
 
+var main_scene = preload("res://scenes/Node2D.tscn")
 var selected_menu = 0
 
 func change_menu_color():
@@ -29,7 +30,8 @@ func _input(_event):
 		match selected_menu:
 			0:
 				# New game
-				get_tree().change_scene("res://scenes/Node2D.tscn")
+				if !get_tree().change_scene_to(main_scene):
+					return null
 			1:
 				# Quit game
 				get_tree().quit()

@@ -15,8 +15,7 @@ func get_input():
 		$AnimatedSprite.play("walk")
 	velocity = velocity.normalized() * speed
 
-# warning-ignore:unused_argument
-func _physics_process(delta):
+func _physics_process(_delta):
 	$AnimatedSprite.flip_h = 0
 	get_input()
 	velocity = move_and_slide(velocity)
