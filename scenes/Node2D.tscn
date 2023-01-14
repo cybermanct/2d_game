@@ -1,5 +1,6 @@
-[gd_scene load_steps=38 format=2]
+[gd_scene load_steps=39 format=2]
 
+[ext_resource path="res://audio/creepy_noise.wav" type="AudioStream" id=1]
 [ext_resource path="res://scenes/Character.tscn" type="PackedScene" id=2]
 [ext_resource path="res://fonts/3117-font(1).ttf" type="DynamicFontData" id=3]
 [ext_resource path="res://materials and shaders/shader1.tres" type="Material" id=4]
@@ -38,6 +39,9 @@ blend_mode = 2
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 188.5, 135 )
 
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 67.5, 535.5 )
+
 [sub_resource type="SpriteFrames" id=7]
 animations = [ {
 "frames": [ null, null ],
@@ -60,9 +64,6 @@ animations = [ {
 size = 63
 outline_size = 6
 font_data = ExtResource( 3 )
-
-[sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 67.5, 535.5 )
 
 [sub_resource type="CanvasItemMaterial" id=10]
 blend_mode = 3
@@ -527,6 +528,26 @@ texture = ExtResource( 11 )
 stream = ExtResource( 12 )
 volume_db = -80.0
 
+[node name="walls" type="StaticBody2D" parent="."]
+position = Vector2( 451, 244 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="walls"]
+position = Vector2( -380.5, 291.5 )
+shape = SubResource( 1 )
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="walls"]
+position = Vector2( 68589, 314 )
+shape = SubResource( 1 )
+
+[node name="ost" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 13 )
+autoplay = true
+bus = "music"
+
+[node name="ost2" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 1 )
+bus = "music"
+
 [node name="KinematicBody2D" parent="." instance=ExtResource( 2 )]
 position = Vector2( 960, 370 )
 speed = 10000
@@ -536,7 +557,6 @@ position = Vector2( 4.94588e-05, 128.788 )
 scale = Vector2( 2.15582, 2.27273 )
 frames = SubResource( 7 )
 animation = "pistol_prepare"
-frame = 2
 playing = true
 script = ExtResource( 16 )
 
@@ -548,6 +568,7 @@ current = true
 [node name="shader" type="Node2D" parent="KinematicBody2D"]
 position = Vector2( -366.49, -93.9394 )
 scale = Vector2( 0.718608, 0.757576 )
+z_index = 10
 
 [node name="ColorRect" type="ColorRect" parent="KinematicBody2D/shader"]
 material = ExtResource( 4 )
@@ -576,22 +597,6 @@ custom_fonts/font = SubResource( 4 )
 align = 1
 valign = 1
 uppercase = true
-
-[node name="walls" type="StaticBody2D" parent="."]
-position = Vector2( 451, 244 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="walls"]
-position = Vector2( -380.5, 291.5 )
-shape = SubResource( 1 )
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="walls"]
-position = Vector2( 68589, 314 )
-shape = SubResource( 1 )
-
-[node name="ost" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 13 )
-autoplay = true
-bus = "music"
 
 [node name="Blood" type="Sprite" parent="."]
 visible = false
