@@ -18,10 +18,10 @@ func load_json_file(path):
 	var obj = dict.result
 	return obj
 
-func print_dialog(loaded_object, key):
+func print_dialog(loaded_object, key, value):
 	load_json_file(loaded_object)
 	print(loaded_object)
-	$Background/Dialog_back/Dialog.text = dict.result[key]
+	$Background/Dialog_back/Dialog.text = dict.result[key][value]
 
 func change_dialog_color():
 	$Background/Option1.color = Color.webgray
@@ -49,6 +49,6 @@ func _input(_event):
 	elif Input.is_action_just_pressed("ui_enter"):
 		match selected_dialog:
 			0:
-				print_dialog(path, "test")	
+				print_dialog(path, "dialog1", "test")	
 			1:
-				print_dialog(path, "test2")
+				print_dialog(path, "dialog1", "test2")
