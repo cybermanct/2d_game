@@ -23,6 +23,11 @@ func print_dialog(path_file, key, value):
 	print(dict.result)
 	$Background/Dialog_back/Dialog.text = dict.result[key][value]
 
+func change_option_text(path_file, key, value1, value2):
+	load_json_file(path_file)
+	$Background/Option1/Dialog_option1.text = dict.result[key][value1]
+	$Background/Option2/Dialog_option2.text = dict.result[key][value2]
+
 func change_dialog_color():
 	$Background/Option1.color = Color.webgray
 	$Background/Option2.color = Color.webgray
@@ -34,6 +39,7 @@ func change_dialog_color():
 			$Background/Option2.color = Color.gray
 
 func _ready():
+	change_option_text(path, "buttons", "test1", "test2")
 	change_dialog_color()
 
 func _input(_event):
