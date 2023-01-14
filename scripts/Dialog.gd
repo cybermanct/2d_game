@@ -4,13 +4,13 @@ var path = "res://scripts/dialogs.json"
 var dict = {}
 var selected_dialog = 0
 
-func load_json_file(path):
+func load_json_file(path_file):
 	var file = File.new()
-	file.open(path, file.READ)
+	file.open(path_file, file.READ)
 	var text = file.get_as_text()
 	dict = JSON.parse(text)
 	if dict.error != OK:
-		print("[load_json_file] Error loading JSON file '" + str(path) + "'.")
+		print("[load_json_file] Error loading JSON file '" + str(path_file) + "'.")
 		print("\tError: ", dict.error)
 		print("\tError Line: ", dict.error_line)
 		print("\tError String: ", dict.error_string)
@@ -18,9 +18,9 @@ func load_json_file(path):
 	var obj = dict.result
 	return obj
 
-func print_dialog(loaded_object, key, value):
-	load_json_file(loaded_object)
-	print(loaded_object)
+func print_dialog(path_file, key, value):
+	load_json_file(path_file)
+	print(dict.result)
 	$Background/Dialog_back/Dialog.text = dict.result[key][value]
 
 func change_dialog_color():
