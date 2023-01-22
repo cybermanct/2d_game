@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=2]
+[gd_scene load_steps=61 format=2]
 
 [ext_resource path="res://audio/creepy_noise.wav" type="AudioStream" id=1]
 [ext_resource path="res://scenes/Character.tscn" type="PackedScene" id=2]
@@ -32,9 +32,33 @@
 [ext_resource path="res://sprites/blood-flows-down-screen-screensaver-background-mass-texture-similar-to-blood-red-blood-flows-down-screen-188135885.jpg" type="Texture" id=30]
 [ext_resource path="res://scripts/Blood.gd" type="Script" id=31]
 [ext_resource path="res://scripts/Node2D.gd" type="Script" id=32]
+[ext_resource path="res://roto_screens/pistol_shoot/151.png" type="Texture" id=33]
+[ext_resource path="res://roto_screens/pistol_shoot/5.png" type="Texture" id=34]
+[ext_resource path="res://roto_screens/pistol_shoot/6.png" type="Texture" id=35]
+[ext_resource path="res://roto_screens/pistol_shoot/11.png" type="Texture" id=36]
+[ext_resource path="res://roto_screens/pistol_shoot/12.png" type="Texture" id=37]
+[ext_resource path="res://roto_screens/pistol_shoot/8.png" type="Texture" id=38]
+[ext_resource path="res://roto_screens/pistol_shoot/4.png" type="Texture" id=39]
+[ext_resource path="res://roto_screens/pistol_shoot/7.png" type="Texture" id=40]
+[ext_resource path="res://roto_screens/pistol_shoot/9.png" type="Texture" id=41]
+[ext_resource path="res://roto_screens/pistol_shoot/10.png" type="Texture" id=42]
+[ext_resource path="res://roto_screens/pistol_shoot/13.png" type="Texture" id=43]
+[ext_resource path="res://roto_screens/pistol_shoot/14.png" type="Texture" id=44]
+[ext_resource path="res://roto_screens/pistol_shoot/192.png" type="Texture" id=45]
+[ext_resource path="res://roto_screens/pistol_shoot/17.png" type="Texture" id=46]
+[ext_resource path="res://roto_screens/pistol_shoot/18.png" type="Texture" id=47]
+[ext_resource path="res://roto_screens/pistol_shoot/193.png" type="Texture" id=48]
+[ext_resource path="res://roto_screens/pistol_shoot/19.png" type="Texture" id=49]
+[ext_resource path="res://roto_screens/pistol_shoot/16.png" type="Texture" id=50]
+[ext_resource path="res://scenes/man_on_chair.gd" type="Script" id=51]
+[ext_resource path="res://audio/pistol_start.wav" type="AudioStream" id=52]
+[ext_resource path="res://audio/270332__littlerobotsoundfactory__hit-03.wav" type="AudioStream" id=53]
 
 [sub_resource type="CanvasItemMaterial" id=9]
 blend_mode = 2
+
+[sub_resource type="RectangleShape2D" id=11]
+extents = Vector2( 203.5, 436.5 )
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 188.5, 135 )
@@ -44,15 +68,25 @@ extents = Vector2( 67.5, 535.5 )
 
 [sub_resource type="SpriteFrames" id=7]
 animations = [ {
-"frames": [ null, null ],
+"frames": [ ExtResource( 49 ), ExtResource( 45 ), ExtResource( 48 ) ],
+"loop": false,
+"name": "pistol_end",
+"speed": 1.0
+}, {
+"frames": [ ExtResource( 36 ), ExtResource( 37 ) ],
 "loop": true,
 "name": "pistol_idle",
 "speed": 1.0
 }, {
-"frames": [ null, null, null, null ],
-"loop": true,
+"frames": [ ExtResource( 39 ), ExtResource( 34 ), ExtResource( 35 ), ExtResource( 40 ), ExtResource( 38 ), ExtResource( 41 ), ExtResource( 42 ), ExtResource( 43 ), ExtResource( 44 ), ExtResource( 33 ) ],
+"loop": false,
 "name": "pistol_prepare",
-"speed": 6.0
+"speed": 1.0
+}, {
+"frames": [ ExtResource( 50 ), ExtResource( 46 ), ExtResource( 47 ), ExtResource( 49 ) ],
+"loop": false,
+"name": "pistol_shoot",
+"speed": 1.0
 }, {
 "frames": [ ExtResource( 17 ) ],
 "loop": true,
@@ -402,6 +436,7 @@ texture = ExtResource( 26 )
 
 [node name="man_on_chair" type="Node2D" parent="."]
 position = Vector2( 62836, -18 )
+script = ExtResource( 51 )
 
 [node name="Chair" type="Sprite" parent="man_on_chair"]
 modulate = Color( 0.501961, 0.258824, 0, 1 )
@@ -413,6 +448,19 @@ texture = ExtResource( 21 )
 position = Vector2( 1488, 807 )
 scale = Vector2( 1.29874, 1.52439 )
 texture = ExtResource( 22 )
+
+[node name="Area2D" type="Area2D" parent="man_on_chair"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="man_on_chair/Area2D"]
+position = Vector2( 1502.5, 620.5 )
+shape = SubResource( 11 )
+
+[node name="sfx" type="AudioStreamPlayer" parent="man_on_chair"]
+stream = ExtResource( 52 )
+
+[node name="sfx_shoot" type="AudioStreamPlayer" parent="man_on_chair"]
+stream = ExtResource( 53 )
+pitch_scale = 0.05
 
 [node name="plakati" type="Node2D" parent="."]
 modulate = Color( 0.662745, 0, 0, 1 )
@@ -553,10 +601,11 @@ position = Vector2( 960, 370 )
 speed = 10000
 
 [node name="screens" type="AnimatedSprite" parent="KinematicBody2D"]
+visible = false
 position = Vector2( 4.94588e-05, 128.788 )
 scale = Vector2( 2.15582, 2.27273 )
 frames = SubResource( 7 )
-animation = "pistol_prepare"
+animation = "pistol_idle"
 playing = true
 script = ExtResource( 16 )
 
@@ -614,6 +663,7 @@ scale = Vector2( 0.00410079, 0.143369 )
 position = Vector2( 322, 600 )
 shape = SubResource( 2 )
 
+[connection signal="body_entered" from="man_on_chair/Area2D" to="man_on_chair" method="_on_Area2D_body_entered"]
 [connection signal="body_entered" from="shelf/area" to="." method="_on_shelf_body_entered"]
 [connection signal="body_entered" from="shelf/area" to="KinematicBody2D/screens" method="_on_area_body_entered"]
 [connection signal="body_exited" from="shelf/area" to="." method="_on_shelf_body_exited"]
