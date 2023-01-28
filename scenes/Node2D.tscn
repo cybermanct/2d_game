@@ -12,7 +12,7 @@
 [ext_resource path="res://sprites/love.png" type="Texture" id=10]
 [ext_resource path="res://sprites/shelf.png" type="Texture" id=11]
 [ext_resource path="res://audio/voice/shelf.wav" type="AudioStream" id=12]
-[ext_resource path="res://audio/voice/ser.wav" type="AudioStream" id=13]
+[ext_resource path="res://audio/ost.wav" type="AudioStream" id=13]
 [ext_resource path="res://sprites/youre-nothing.png" type="Texture" id=14]
 [ext_resource path="res://sprites/plakat.png" type="Texture" id=15]
 [ext_resource path="res://scripts/CanvasLayer.gd" type="Script" id=16]
@@ -81,12 +81,12 @@ animations = [ {
 "frames": [ ExtResource( 39 ), ExtResource( 34 ), ExtResource( 35 ), ExtResource( 40 ), ExtResource( 38 ), ExtResource( 41 ), ExtResource( 42 ), ExtResource( 43 ), ExtResource( 44 ), ExtResource( 33 ) ],
 "loop": false,
 "name": "pistol_prepare",
-"speed": 1.0
+"speed": 2.0
 }, {
 "frames": [ ExtResource( 50 ), ExtResource( 46 ), ExtResource( 47 ), ExtResource( 49 ) ],
 "loop": false,
 "name": "pistol_shoot",
-"speed": 1.0
+"speed": 3.0
 }, {
 "frames": [ ExtResource( 17 ) ],
 "loop": true,
@@ -605,7 +605,8 @@ visible = false
 position = Vector2( 4.94588e-05, 128.788 )
 scale = Vector2( 2.15582, 2.27273 )
 frames = SubResource( 7 )
-animation = "pistol_idle"
+animation = "pistol_shoot"
+frame = 3
 playing = true
 script = ExtResource( 16 )
 
