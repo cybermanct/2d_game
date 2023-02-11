@@ -16,7 +16,7 @@ func _ready():
 #	pass
 
 
-func _on_Area2D_body_entered(body):
+func _on_Area2D_body_entered(_body):
 	$"../ost2".stop()
 	$"../Blood".hide()
 	screens.show()
@@ -28,6 +28,3 @@ func _on_Area2D_body_entered(body):
 	$sfx.stop()
 	screens.play("pistol_shoot")
 	$sfx_shoot.play()
-	yield(get_tree().create_timer(5.0), "timeout")
-	screens.play("pistol_end")
-	yield(get_tree().create_timer(3.0), "timeout")

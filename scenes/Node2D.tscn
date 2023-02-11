@@ -1,4 +1,4 @@
-[gd_scene load_steps=61 format=2]
+[gd_scene load_steps=62 format=2]
 
 [ext_resource path="res://audio/creepy_noise.wav" type="AudioStream" id=1]
 [ext_resource path="res://scenes/Character.tscn" type="PackedScene" id=2]
@@ -12,7 +12,7 @@
 [ext_resource path="res://sprites/love.png" type="Texture" id=10]
 [ext_resource path="res://sprites/shelf.png" type="Texture" id=11]
 [ext_resource path="res://audio/voice/shelf.wav" type="AudioStream" id=12]
-[ext_resource path="res://audio/voice/ser.wav" type="AudioStream" id=13]
+[ext_resource path="res://audio/ost.wav" type="AudioStream" id=13]
 [ext_resource path="res://sprites/youre-nothing.png" type="Texture" id=14]
 [ext_resource path="res://sprites/plakat.png" type="Texture" id=15]
 [ext_resource path="res://scripts/CanvasLayer.gd" type="Script" id=16]
@@ -50,9 +50,10 @@
 [ext_resource path="res://roto_screens/pistol_shoot/193.png" type="Texture" id=48]
 [ext_resource path="res://roto_screens/pistol_shoot/19.png" type="Texture" id=49]
 [ext_resource path="res://roto_screens/pistol_shoot/16.png" type="Texture" id=50]
-[ext_resource path="res://scenes/man_on_chair.gd" type="Script" id=51]
+[ext_resource path="res://scripts/man_on_chair.gd" type="Script" id=51]
 [ext_resource path="res://audio/pistol_start.wav" type="AudioStream" id=52]
 [ext_resource path="res://audio/270332__littlerobotsoundfactory__hit-03.wav" type="AudioStream" id=53]
+[ext_resource path="res://scenes/Dialog.tscn" type="PackedScene" id=54]
 
 [sub_resource type="CanvasItemMaterial" id=9]
 blend_mode = 2
@@ -81,12 +82,12 @@ animations = [ {
 "frames": [ ExtResource( 39 ), ExtResource( 34 ), ExtResource( 35 ), ExtResource( 40 ), ExtResource( 38 ), ExtResource( 41 ), ExtResource( 42 ), ExtResource( 43 ), ExtResource( 44 ), ExtResource( 33 ) ],
 "loop": false,
 "name": "pistol_prepare",
-"speed": 1.0
+"speed": 2.0
 }, {
 "frames": [ ExtResource( 50 ), ExtResource( 46 ), ExtResource( 47 ), ExtResource( 49 ) ],
 "loop": false,
 "name": "pistol_shoot",
-"speed": 1.0
+"speed": 3.0
 }, {
 "frames": [ ExtResource( 17 ) ],
 "loop": true,
@@ -560,7 +561,7 @@ texture = ExtResource( 10 )
 position = Vector2( 5195, 9 )
 
 [node name="area" type="Area2D" parent="shelf"]
-position = Vector2( 3147, 236 )
+position = Vector2( 3141, 274 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="shelf/area"]
 position = Vector2( 475.5, 554 )
@@ -605,7 +606,8 @@ visible = false
 position = Vector2( 4.94588e-05, 128.788 )
 scale = Vector2( 2.15582, 2.27273 )
 frames = SubResource( 7 )
-animation = "pistol_idle"
+animation = "pistol_shoot"
+frame = 3
 playing = true
 script = ExtResource( 16 )
 
@@ -647,6 +649,10 @@ align = 1
 valign = 1
 uppercase = true
 
+[node name="Dialog" parent="KinematicBody2D" instance=ExtResource( 54 )]
+visible = false
+position = Vector2( -977.306, -520.454 )
+
 [node name="Blood" type="Sprite" parent="."]
 visible = false
 material = SubResource( 10 )
@@ -664,7 +670,6 @@ position = Vector2( 322, 600 )
 shape = SubResource( 2 )
 
 [connection signal="body_entered" from="man_on_chair/Area2D" to="man_on_chair" method="_on_Area2D_body_entered"]
-[connection signal="body_entered" from="shelf/area" to="." method="_on_shelf_body_entered"]
-[connection signal="body_entered" from="shelf/area" to="KinematicBody2D/screens" method="_on_area_body_entered"]
-[connection signal="body_exited" from="shelf/area" to="." method="_on_shelf_body_exited"]
+[connection signal="body_entered" from="shelf/area" to="." method="_on_area_body_entered"]
+[connection signal="dialog" from="KinematicBody2D/Dialog" to="." method="_on_Dialog_dialog"]
 [connection signal="body_entered" from="Blood/blood_trigger" to="Blood" method="_on_blood_trigger_body_entered"]

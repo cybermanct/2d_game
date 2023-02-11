@@ -1,8 +1,10 @@
 extends Node2D
 
-var path = "res://scripts/dialogs.json"
+signal dialog(key, value)
+
+var path = 'res://scripts/dialogs.json'
 var dict = {}
-var selected_dialog = 0
+export var selected_dialog = 0
 
 func load_json_file(path_file):
 	var file = File.new()
@@ -38,7 +40,7 @@ func change_dialog_color():
 
 func _ready():
 	load_json_file(path)
-	change_option_text("buttons", "test1", "test2")
+	change_option_text("buttons", "0", "1")
 	change_dialog_color()
 
 func _input(_event):
@@ -51,9 +53,10 @@ func _input(_event):
 		else:
 			selected_dialog = 1
 		change_dialog_color()
-	elif Input.is_action_just_pressed("ui_enter"):
-		match selected_dialog:
-			0:
-				print_dialog("dialog1", "test")	
-			1:
-				print_dialog("dialog1", "test2")
+#	elif Input.is_action_just_pressed("ui_enter"):
+#		match selected_dialog:
+#			0:
+#				print_dialog("dialog1", "0")
+#			1:
+#				print_dialog("dialog1", "1")
+				

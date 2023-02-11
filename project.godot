@@ -20,7 +20,7 @@ _global_script_class_icons={
 
 [application]
 
-config/name="2 Dgame Test"
+config/name="2 Dgame Test backup"
 run/main_scene="res://scenes/Menu.tscn"
 config/icon="res://icon.png"
 
