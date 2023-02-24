@@ -1,9 +1,9 @@
-[gd_scene load_steps=62 format=2]
+[gd_scene load_steps=65 format=2]
 
 [ext_resource path="res://audio/creepy_noise.wav" type="AudioStream" id=1]
 [ext_resource path="res://scenes/Character.tscn" type="PackedScene" id=2]
 [ext_resource path="res://fonts/3117-font(1).ttf" type="DynamicFontData" id=3]
-[ext_resource path="res://materials and shaders/shader1.tres" type="Material" id=4]
+[ext_resource path="res://GodotRetro/Screen Shaders/NTSC.shader" type="Shader" id=4]
 [ext_resource path="res://bgs/bg-1.png" type="Texture" id=5]
 [ext_resource path="res://bgs/bl.png" type="Texture" id=6]
 [ext_resource path="res://bgs/bg-end.png" type="Texture" id=7]
@@ -27,7 +27,7 @@
 [ext_resource path="res://sprites/pill.png" type="Texture" id=25]
 [ext_resource path="res://sprites/want.png" type="Texture" id=26]
 [ext_resource path="res://sprites/pngwing.com(4).png" type="Texture" id=27]
-[ext_resource path="res://materials and shaders/shader2.tres" type="Material" id=28]
+[ext_resource path="res://GodotRetro/Screen Shaders/VHS.shader" type="Shader" id=28]
 [ext_resource path="res://sprites/clock.png" type="Texture" id=29]
 [ext_resource path="res://sprites/blood-flows-down-screen-screensaver-background-mass-texture-similar-to-blood-red-blood-flows-down-screen-188135885.jpg" type="Texture" id=30]
 [ext_resource path="res://scripts/Blood.gd" type="Script" id=31]
@@ -54,6 +54,7 @@
 [ext_resource path="res://audio/pistol_start.wav" type="AudioStream" id=52]
 [ext_resource path="res://audio/270332__littlerobotsoundfactory__hit-03.wav" type="AudioStream" id=53]
 [ext_resource path="res://scenes/Dialog.tscn" type="PackedScene" id=54]
+[ext_resource path="res://scenes/doors.gd" type="Script" id=55]
 
 [sub_resource type="CanvasItemMaterial" id=9]
 blend_mode = 2
@@ -63,9 +64,6 @@ extents = Vector2( 203.5, 436.5 )
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 188.5, 135 )
-
-[sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 67.5, 535.5 )
 
 [sub_resource type="SpriteFrames" id=7]
 animations = [ {
@@ -95,6 +93,19 @@ animations = [ {
 "speed": 5.0
 } ]
 
+[sub_resource type="ShaderMaterial" id=13]
+shader = ExtResource( 28 )
+shader_param/tape_wave_amount = 0.002
+shader_param/tape_crease_amount = 0.0
+shader_param/color_displacement = 0.779
+shader_param/lines_velocity = 0.0
+
+[sub_resource type="ShaderMaterial" id=12]
+shader = ExtResource( 4 )
+shader_param/blur_amount = 1.027
+shader_param/signal_quality = 0.042
+shader_param/bottom_strenth = 1.792
+
 [sub_resource type="DynamicFont" id=4]
 size = 63
 outline_size = 6
@@ -103,7 +114,11 @@ font_data = ExtResource( 3 )
 [sub_resource type="CanvasItemMaterial" id=10]
 blend_mode = 3
 
+[sub_resource type="RectangleShape2D" id=14]
+extents = Vector2( 83.6517, 590.393 )
+
 [node name="Node2D" type="Node2D"]
+scale = Vector2( 0.445, 0.445 )
 script = ExtResource( 32 )
 
 [node name="bg" type="Node2D" parent="."]
@@ -116,11 +131,12 @@ scale = Vector2( 3.43398, 5.19271 )
 texture = ExtResource( 6 )
 
 [node name="Bl2" type="Sprite" parent="bg"]
-position = Vector2( 69356, 884 )
+position = Vector2( 4075.1, 539.612 )
 scale = Vector2( 3.43398, 5.19271 )
 texture = ExtResource( 6 )
 
 [node name="trigger" type="Node2D" parent="bg"]
+visible = false
 position = Vector2( -960, 4 )
 
 [node name="bg_side22" type="Sprite" parent="bg/trigger"]
@@ -128,11 +144,13 @@ position = Vector2( 4800, 536 )
 texture = ExtResource( 5 )
 
 [node name="bg_side2" type="Sprite" parent="bg/trigger"]
+visible = false
 position = Vector2( 2880, 536 )
 texture = ExtResource( 5 )
 flip_h = true
 
 [node name="trigger3" type="Node2D" parent="bg"]
+visible = false
 position = Vector2( 2880, 4 )
 
 [node name="bg_side22" type="Sprite" parent="bg/trigger3"]
@@ -145,6 +163,7 @@ texture = ExtResource( 5 )
 flip_h = true
 
 [node name="trigger4" type="Node2D" parent="bg"]
+visible = false
 position = Vector2( 6720, 4 )
 
 [node name="bg_side22" type="Sprite" parent="bg/trigger4"]
@@ -157,6 +176,7 @@ texture = ExtResource( 5 )
 flip_h = true
 
 [node name="trigger5" type="Node2D" parent="bg"]
+visible = false
 position = Vector2( 10560, 4 )
 
 [node name="bg_side22" type="Sprite" parent="bg/trigger5"]
@@ -169,6 +189,7 @@ texture = ExtResource( 5 )
 flip_h = true
 
 [node name="trigger6" type="Node2D" parent="bg"]
+visible = false
 position = Vector2( 14400, 4 )
 
 [node name="bg_side22" type="Sprite" parent="bg/trigger6"]
@@ -181,6 +202,7 @@ texture = ExtResource( 5 )
 flip_h = true
 
 [node name="trigger7" type="Node2D" parent="bg"]
+visible = false
 position = Vector2( 18240, 4 )
 
 [node name="bg_side22" type="Sprite" parent="bg/trigger7"]
@@ -193,6 +215,7 @@ texture = ExtResource( 5 )
 flip_h = true
 
 [node name="trigger8" type="Node2D" parent="bg"]
+visible = false
 position = Vector2( 22080, 4 )
 
 [node name="bg_side22" type="Sprite" parent="bg/trigger8"]
@@ -205,6 +228,7 @@ texture = ExtResource( 5 )
 flip_h = true
 
 [node name="trigger9" type="Node2D" parent="bg"]
+visible = false
 position = Vector2( 25920, 4 )
 
 [node name="bg_side22" type="Sprite" parent="bg/trigger9"]
@@ -217,6 +241,7 @@ texture = ExtResource( 5 )
 flip_h = true
 
 [node name="trigger10" type="Node2D" parent="bg"]
+visible = false
 position = Vector2( 29760, 4 )
 
 [node name="bg_side22" type="Sprite" parent="bg/trigger10"]
@@ -229,6 +254,7 @@ texture = ExtResource( 5 )
 flip_h = true
 
 [node name="trigger11" type="Node2D" parent="bg"]
+visible = false
 position = Vector2( 33600, 4 )
 
 [node name="bg_side22" type="Sprite" parent="bg/trigger11"]
@@ -241,6 +267,7 @@ texture = ExtResource( 5 )
 flip_h = true
 
 [node name="trigger12" type="Node2D" parent="bg"]
+visible = false
 position = Vector2( 37440, 4 )
 
 [node name="bg_side22" type="Sprite" parent="bg/trigger12"]
@@ -253,6 +280,7 @@ texture = ExtResource( 5 )
 flip_h = true
 
 [node name="trigger13" type="Node2D" parent="bg"]
+visible = false
 position = Vector2( 41280, 4 )
 
 [node name="bg_side22" type="Sprite" parent="bg/trigger13"]
@@ -265,6 +293,7 @@ texture = ExtResource( 5 )
 flip_h = true
 
 [node name="trigger14" type="Node2D" parent="bg"]
+visible = false
 position = Vector2( 45120, 4 )
 
 [node name="bg_side22" type="Sprite" parent="bg/trigger14"]
@@ -277,6 +306,7 @@ texture = ExtResource( 5 )
 flip_h = true
 
 [node name="trigger15" type="Node2D" parent="bg"]
+visible = false
 position = Vector2( 48960, 4 )
 
 [node name="bg_side22" type="Sprite" parent="bg/trigger15"]
@@ -289,6 +319,7 @@ texture = ExtResource( 5 )
 flip_h = true
 
 [node name="trigger16" type="Node2D" parent="bg"]
+visible = false
 position = Vector2( 52800, 4 )
 
 [node name="bg_side22" type="Sprite" parent="bg/trigger16"]
@@ -301,6 +332,7 @@ texture = ExtResource( 5 )
 flip_h = true
 
 [node name="trigger17" type="Node2D" parent="bg"]
+visible = false
 position = Vector2( 56640, 4 )
 
 [node name="bg_side22" type="Sprite" parent="bg/trigger17"]
@@ -313,6 +345,7 @@ texture = ExtResource( 5 )
 flip_h = true
 
 [node name="trigger18" type="Node2D" parent="bg"]
+visible = false
 position = Vector2( 60480, 4 )
 
 [node name="bg_side22" type="Sprite" parent="bg/trigger18"]
@@ -329,7 +362,26 @@ position = Vector2( 0, 540 )
 texture = ExtResource( 7 )
 
 [node name="Sprite2" type="Sprite" parent="bg"]
-position = Vector2( 67200, 540 )
+position = Vector2( 1919.1, 539.612 )
+texture = ExtResource( 7 )
+flip_h = true
+
+[node name="Bl3" type="Sprite" parent="bg"]
+position = Vector2( -10774.5, 971 )
+scale = Vector2( 3.43398, 5.19271 )
+texture = ExtResource( 6 )
+
+[node name="Bl4" type="Sprite" parent="bg"]
+position = Vector2( -4542.65, 539.612 )
+scale = Vector2( 3.43398, 5.19271 )
+texture = ExtResource( 6 )
+
+[node name="Sprite3" type="Sprite" parent="bg"]
+position = Vector2( -8617.75, 540 )
+texture = ExtResource( 7 )
+
+[node name="Sprite4" type="Sprite" parent="bg"]
+position = Vector2( -6698.65, 539.612 )
 texture = ExtResource( 7 )
 flip_h = true
 
@@ -562,6 +614,7 @@ position = Vector2( 5195, 9 )
 
 [node name="area" type="Area2D" parent="shelf"]
 position = Vector2( 3141, 274 )
+scale = Vector2( 0.969297, 1.15182 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="shelf/area"]
 position = Vector2( 475.5, 554 )
@@ -577,17 +630,6 @@ texture = ExtResource( 11 )
 stream = ExtResource( 12 )
 volume_db = -80.0
 
-[node name="walls" type="StaticBody2D" parent="."]
-position = Vector2( 451, 244 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="walls"]
-position = Vector2( -380.5, 291.5 )
-shape = SubResource( 1 )
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="walls"]
-position = Vector2( 68589, 314 )
-shape = SubResource( 1 )
-
 [node name="ost" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 13 )
 autoplay = true
@@ -599,7 +641,6 @@ bus = "music"
 
 [node name="KinematicBody2D" parent="." instance=ExtResource( 2 )]
 position = Vector2( 960, 370 )
-speed = 10000
 
 [node name="screens" type="AnimatedSprite" parent="KinematicBody2D"]
 visible = false
@@ -615,24 +656,25 @@ script = ExtResource( 16 )
 position = Vector2( 0, 128.788 )
 scale = Vector2( 0.337553, 0.407834 )
 current = true
+smoothing_enabled = true
 
-[node name="shader" type="Node2D" parent="KinematicBody2D"]
-position = Vector2( -366.49, -93.9394 )
-scale = Vector2( 0.718608, 0.757576 )
+[node name="shader" type="Node2D" parent="KinematicBody2D/Camera2D"]
+position = Vector2( -1507.91, -548.085 )
+scale = Vector2( 3, 1.858 )
 z_index = 10
 
-[node name="ColorRect" type="ColorRect" parent="KinematicBody2D/shader"]
-material = ExtResource( 4 )
+[node name="ColorRect" type="ColorRect" parent="KinematicBody2D/Camera2D/shader"]
+material = SubResource( 13 )
 margin_left = -451.0
 margin_top = -246.0
 margin_right = 1470.0
 margin_bottom = 834.0
 
-[node name="BackBufferCopy" type="BackBufferCopy" parent="KinematicBody2D/shader"]
+[node name="BackBufferCopy" type="BackBufferCopy" parent="KinematicBody2D/Camera2D/shader"]
 copy_mode = 2
 
-[node name="ColorRect2" type="ColorRect" parent="KinematicBody2D/shader"]
-material = ExtResource( 28 )
+[node name="ColorRect2" type="ColorRect" parent="KinematicBody2D/Camera2D/shader"]
+material = SubResource( 12 )
 margin_left = -451.0
 margin_top = -246.0
 margin_right = 1470.0
@@ -669,7 +711,18 @@ scale = Vector2( 0.00410079, 0.143369 )
 position = Vector2( 322, 600 )
 shape = SubResource( 2 )
 
+[node name="doors" type="Node2D" parent="."]
+script = ExtResource( 55 )
+
+[node name="door" type="Area2D" parent="doors"]
+scale = Vector2( 1, 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="doors/door"]
+position = Vector2( 73.6517, 580.393 )
+scale = Vector2( 1, 1 )
+shape = SubResource( 14 )
+
 [connection signal="body_entered" from="man_on_chair/Area2D" to="man_on_chair" method="_on_Area2D_body_entered"]
 [connection signal="body_entered" from="shelf/area" to="." method="_on_area_body_entered"]
-[connection signal="dialog" from="KinematicBody2D/Dialog" to="." method="_on_Dialog_dialog"]
 [connection signal="body_entered" from="Blood/blood_trigger" to="Blood" method="_on_blood_trigger_body_entered"]
+[connection signal="body_entered" from="doors/door" to="doors" method="_on_door_body_entered"]

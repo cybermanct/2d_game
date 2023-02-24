@@ -26,7 +26,7 @@ func _input(_event):
 		else:
 			selected_menu = 1
 		change_menu_color()
-	elif Input.is_action_just_pressed("ui_enter"):
+	elif Input.is_action_just_pressed("ui_accept"):
 		match selected_menu:
 			0:
 				# New game

@@ -27,7 +27,7 @@ animations = [ {
 "frames": [ ExtResource( 5 ), ExtResource( 2 ), ExtResource( 8 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 13 ) ],
 "loop": true,
 "name": "walk",
-"speed": 4.0
+"speed": 7.0
 } ]
 
 [node name="KinematicBody2D" type="KinematicBody2D"]

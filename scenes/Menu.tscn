@@ -1,7 +1,7 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=8 format=2]
 
-[ext_resource path="res://materials and shaders/shader2.tres" type="Material" id=1]
-[ext_resource path="res://materials and shaders/shader1.tres" type="Material" id=2]
+[ext_resource path="res://GodotRetro/Screen Shaders/NTSC.shader" type="Shader" id=1]
+[ext_resource path="res://GodotRetro/Screen Shaders/VHS.shader" type="Shader" id=2]
 [ext_resource path="res://fonts/3117-font(1).ttf" type="DynamicFontData" id=3]
 [ext_resource path="res://scripts/Menu.gd" type="Script" id=4]
 
@@ -12,8 +12,22 @@ extra_spacing_char = 29
 extra_spacing_space = -31
 font_data = ExtResource( 3 )
 
+[sub_resource type="ShaderMaterial" id=2]
+shader = ExtResource( 2 )
+shader_param/tape_wave_amount = 0.003
+shader_param/tape_crease_amount = 0.0
+shader_param/color_displacement = 0.0
+shader_param/lines_velocity = 0.0
+
+[sub_resource type="ShaderMaterial" id=3]
+shader = ExtResource( 1 )
+shader_param/blur_amount = 0.559
+shader_param/signal_quality = 0.042
+shader_param/bottom_strenth = 0.35
+
 [node name="MainMenu" type="Node2D"]
 position = Vector2( -1, 0 )
+scale = Vector2( 0.445, 0.445 )
 script = ExtResource( 4 )
 
 [node name="Background" type="ColorRect" parent="."]
@@ -56,16 +70,23 @@ valign = 1
 uppercase = true
 
 [node name="shader" type="Node2D" parent="."]
+position = Vector2( 320, 189 )
+scale = Vector2( 0.718608, 0.757576 )
+z_index = 10
 
 [node name="ColorRect" type="ColorRect" parent="shader"]
-material = ExtResource( 2 )
-margin_right = 1920.0
-margin_bottom = 1080.0
+material = SubResource( 2 )
+margin_left = -451.0
+margin_top = -246.0
+margin_right = 2227.0
+margin_bottom = 1176.0
 
 [node name="BackBufferCopy" type="BackBufferCopy" parent="shader"]
 copy_mode = 2
 
 [node name="ColorRect2" type="ColorRect" parent="shader"]
-material = ExtResource( 1 )
-margin_right = 1920.0
-margin_bottom = 1080.0
+material = SubResource( 3 )
+margin_left = -451.0
+margin_top = -246.0
+margin_right = 2227.0
+margin_bottom = 1176.0
